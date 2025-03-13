@@ -58,17 +58,6 @@ router.get("/edit/:fileName", (req, res) => {
 });
 
 // Update Excel File
-// router.post("/edit/:fileName", (req, res) => {
-//   const filePath = path.join(__dirname, "uploads", req.params.fileName);
-//   const newData = JSON.parse(req.body.updatedData);
-
-//   const worksheet = XLSX.utils.json_to_sheet(newData);
-//   const workbook = XLSX.utils.book_new();
-//   XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-
-//   XLSX.writeFile(workbook, filePath);
-//   res.redirect("/");
-// });
 router.post("/edit/:fileName", async (req, res) => {
     try {
       const fileName = req.params.fileName;
@@ -77,19 +66,19 @@ router.post("/edit/:fileName", async (req, res) => {
       const updatedData = JSON.parse(req.body.updatedData);
   
       // Read the existing workbook
-      const workbook = xlsx.readFile(filePath);
+      const workbook = XLSX.readFile(filePath);
       const sheetName = workbook.SheetNames[0];
-      
+  
       // Convert JSON back to worksheet
-      const worksheet = xlsx.utils.json_to_sheet(updatedData);
+      const worksheet = XLSX.utils.json_to_sheet(updatedData);
   
       // Update the workbook with the new worksheet
       workbook.Sheets[sheetName] = worksheet;
   
       // Save the updated Excel file
-      xlsx.writeFile(workbook, filePath);
+      XLSX.writeFile(workbook, filePath);
   
-      res.redirect(`/download/${fileName}`);
+      res.redirect(`/edit/${fileName}`); // Stay on edit page after saving
     } catch (err) {
       console.error(err);
       res.redirect("/");
