@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload Excel</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-gray-200 p-6">
+  <div class="max-w-md mx-auto bg-gray-800 rounded-lg shadow-lg p-6">
+    <h1 class="text-3xl font-bold mb-6 text-center">Upload Excel File</h1>
+
+    <form action="/upload" method="post" enctype="multipart/form-data" class="mt-4">
+      <input type="text" name="heading" placeholder="Heading" class="border border-gray-600 bg-gray-700 text-gray-200 p-3 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 mb-4" required>
+      <input type="file" name="excelFile" required class="border border-gray-600 bg-gray-700 text-gray-200 p-3 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 mb-4">
+      <button type="submit" class="bg-blue-600 text-white p-3 rounded-md hover:bg-blue-700 transition duration-200 w-full">Upload</button>
+    </form>
+
+    <a href="/" class="mt-4 block text-center text-blue-400 hover:text-blue-500 transition duration-200">Back to Home</a>
+  </div>
+</body>
+</html>

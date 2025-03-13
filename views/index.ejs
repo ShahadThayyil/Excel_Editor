@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Excel Manager</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-gray-200 p-6">
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-4xl font-bold mb-6 text-center">Uploaded Excel Files</h1>
+
+    <form action="/search" method="get" class="mb-6 flex justify-center">
+      <input type="text" name="query" placeholder="Search by heading" class="border border-gray-600 bg-gray-800 text-gray-200 p-3 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 ease-in-out transform hover:scale-105">
+      <button type="submit" class="bg-blue-600 text-white p-3 rounded-r-md hover:bg-blue-700 transition duration-200 transform hover:scale-105">Search</button>
+    </form>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <% files.forEach(file => { %>
+        <div class="bg-gray-800 border border-gray-700 rounded-lg shadow-lg transform transition-transform hover:scale-105 p-4">
+          <h2 class="font-bold text-lg mb-2 text-center"><%= file.heading %></h2>
+          <div class="flex justify-around mt-4">
+            <a href="/view/<%= file.fileName %>" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-200 transform hover:scale-105">View</a>
+            <a href="/edit/<%= file.fileName %>" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition duration-200 transform hover:scale-105">Edit</a>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+
+    <div class="mt-6 text-center">
+      <a href="/upload" class="inline-block bg-blue-600 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700 transition duration-200">Upload New File</a>
+    </div>
+  </div>
+</body>
+</html>
