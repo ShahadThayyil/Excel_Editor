@@ -3,6 +3,7 @@ const multer = require("multer");
 const path = require("path");
 const XLSX = require("xlsx");
 const ExcelFile = require("./models/ExcelFile");
+const fs = require("fs");
 
 const router = express.Router();
 
@@ -68,5 +69,22 @@ router.post("/edit/:fileName", (req, res) => {
   XLSX.writeFile(workbook, filePath);
   res.redirect("/");
 });
+router.post("/delete/:id", async (req, res) => {
+    try {
+      const file = await ExcelFile.findById(req.params.id);
+      if (!file) return res.redirect("/");
+  
+      // Delete file from uploads folder
+      fs.unlinkSync(`./uploads/${file.fileName}`);
+  
+      // Delete from database
+      await ExcelFile.findByIdAndDelete(req.params.id);
+  
+      res.redirect("/");
+    } catch (err) {
+      console.error(err);
+      res.redirect("/");
+    }
+  });
 
 module.exports = router;

@@ -15,7 +15,7 @@
       <button type="submit" class="bg-blue-600 text-white p-3 rounded-r-md hover:bg-blue-700 transition duration-200 transform hover:scale-105">Search</button>
     </form>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <!-- <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       <% files.forEach(file => { %>
         <div class="bg-gray-800 border border-gray-700 rounded-lg shadow-lg transform transition-transform hover:scale-105 p-4">
           <h2 class="font-bold text-lg mb-2 text-center"><%= file.heading %></h2>
@@ -25,8 +25,33 @@
           </div>
         </div>
       <% }); %>
+      <div class="grid grid-cols-3 gap-4 mt-4">
+  <% files.forEach(file => { %>
+    <div class="border p-4">
+      <h2 class="font-bold"><%= file.heading %></h2>
+      <a href="/view/<%= file.fileName %>" class="text-blue-500">View</a> |
+      <a href="/edit/<%= file.fileName %>" class="text-green-500">Edit</a>
+      <form action="/delete/<%= file._id %>" method="POST" style="display: inline;">
+        <button type="submit" class="text-red-500">Delete</button>
+      </form>
     </div>
-
+  <% }); %>
+</div>
+    </div> -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
+        <% files.forEach(file => { %>
+          <div class="bg-gray-800 border border-gray-700 rounded-lg shadow-lg p-4 transform transition-transform hover:scale-105">
+            <h2 class="font-bold text-lg mb-2 text-center"><%= file.heading %></h2>
+            <div class="flex justify-around mt-4">
+              <a href="/view/<%= file.fileName %>" class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition duration-200">View</a>
+              <a href="/edit/<%= file.fileName %>" class="bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700 transition duration-200">Edit</a>
+              <form action="/delete/<%= file._id %>" method="POST" style="display: inline;">
+                <button type="submit" class="bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700 transition duration-200">Delete</button>
+              </form>
+            </div>
+          </div>
+        <% }); %>
+      </div>
     <div class="mt-6 text-center">
       <a href="/upload" class="inline-block bg-blue-600 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700 transition duration-200">Upload New File</a>
     </div>
