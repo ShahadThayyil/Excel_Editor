@@ -58,17 +58,49 @@ router.get("/edit/:fileName", (req, res) => {
 });
 
 // Update Excel File
-router.post("/edit/:fileName", (req, res) => {
-  const filePath = path.join(__dirname, "uploads", req.params.fileName);
-  const newData = JSON.parse(req.body.updatedData);
+// router.post("/edit/:fileName", (req, res) => {
+//   const filePath = path.join(__dirname, "uploads", req.params.fileName);
+//   const newData = JSON.parse(req.body.updatedData);
 
-  const worksheet = XLSX.utils.json_to_sheet(newData);
-  const workbook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+//   const worksheet = XLSX.utils.json_to_sheet(newData);
+//   const workbook = XLSX.utils.book_new();
+//   XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
 
-  XLSX.writeFile(workbook, filePath);
-  res.redirect("/");
-});
+//   XLSX.writeFile(workbook, filePath);
+//   res.redirect("/");
+// });
+router.post("/edit/:fileName", async (req, res) => {
+    try {
+      const fileName = req.params.fileName;
+      const filePath = `./uploads/${fileName}`;
+  
+      const updatedData = JSON.parse(req.body.updatedData);
+  
+      // Read the existing workbook
+      const workbook = xlsx.readFile(filePath);
+      const sheetName = workbook.SheetNames[0];
+      
+      // Convert JSON back to worksheet
+      const worksheet = xlsx.utils.json_to_sheet(updatedData);
+  
+      // Update the workbook with the new worksheet
+      workbook.Sheets[sheetName] = worksheet;
+  
+      // Save the updated Excel file
+      xlsx.writeFile(workbook, filePath);
+  
+      res.redirect(`/download/${fileName}`);
+    } catch (err) {
+      console.error(err);
+      res.redirect("/");
+    }
+  });
+  
+  // Route to Download Updated Excel File
+  router.get("/download/:fileName", (req, res) => {
+    const filePath = `./uploads/${req.params.fileName}`;
+    res.download(filePath, req.params.fileName);
+  });
 router.post("/delete/:id", async (req, res) => {
     try {
       const file = await ExcelFile.findById(req.params.id);

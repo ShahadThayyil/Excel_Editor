@@ -10,35 +10,63 @@
   <div class="max-w-4xl mx-auto bg-gray-800 rounded-lg shadow-lg p-6">
     <h1 class="text-3xl font-bold mb-6 text-center">Edit Excel File: <%= sheetName %></h1>
 
-    <form id="editForm" action="/edit/<%= fileName %>" method="POST">
-      <table class="min-w-full border border-gray-700 rounded-lg overflow-hidden">
-        <thead class="bg-gray-700">
-          <tr>
-            <% Object.keys(data[0]).forEach(key => { %>
-              <th class="border border-gray-600 p-3 text-left text-gray-300 font-semibold uppercase tracking-wider"><%= key %></th>
-            <% }) %>
-          </tr>
-        </thead>
-        <tbody>
-          <% data.forEach((row, rowIndex) => { %>
-            <tr class="hover:bg-gray-600 transition duration-200">
-              <% Object.keys(row).forEach((key) => { %>
-                <td class="border border-gray-600 p-2">
-                  <input type="text" name="cell" 
-                    value="<%= row[key] %>" 
-                    data-row="<%= rowIndex %>" 
-                    data-col="<%= key %>"
-                    class="border border-gray-500 bg-gray-700 text-gray-200 p-2 w-full rounded focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200">
-                </td>
+    <form id="editForm" action="/edit/<%= fileName %>" method="POST" class="bg-gray-800 rounded-lg shadow-lg p-6">
+        <table class="min-w-full border border-gray-700 rounded-lg overflow-hidden">
+          <thead class="bg-gray-700">
+            <tr>
+              <% Object.keys(data[0]).forEach(key => { %>
+                <th class="border border-gray-600 p-3 text-left text-gray-300 font-semibold uppercase tracking-wider"><%= key %></th>
               <% }) %>
             </tr>
-          <% }) %>
-        </tbody>
-      </table>
-
-      <input type="hidden" name="updatedData" id="updatedData">
-      <button type="submit" class="bg-green-600 text-white p-3 mt-4 rounded hover:bg-green-700 transition duration-200 w-full">Save Changes</button>
-    </form>
+          </thead>
+          <tbody>
+            <% data.forEach((row, rowIndex) => { %>
+              <tr class="hover:bg-gray-600 transition duration-200">
+                <% Object.keys(row).forEach((key) => { %>
+                  <td class="border border-gray-600 p-2">
+                    <input type="text" name="cell" 
+                      value="<%= row[key] %>" 
+                      data-row="<%= rowIndex %>" 
+                      data-col="<%= key %>"
+                      class="border border-gray-500 bg-gray-700 text-gray-200 p-2 w-full rounded focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200">
+                  </td>
+                <% }) %>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      
+        <input type="hidden" name="updatedData" id="updatedData">
+        <button type="submit" class="bg-green-600 text-white p-3 mt-4 rounded hover:bg-green-700 transition duration-200 w-full">Save Changes</button>
+      </form>
+      
+      <a href="/" class="mt-4 block text-blue-500">Back to Home</a>
+      
+      <!-- Show Download Button After Editing -->
+      <% if (fileName) { %>
+        <a href="/download/<%= fileName %>" class="bg-blue-500 text-white p-2 mt-4 inline-block">Download Updated File</a>
+      <% } %>
+      
+      <script>
+        document.getElementById("editForm").addEventListener("submit", function(event) {
+          event.preventDefault();
+          
+          let updatedData = [];
+          let rows = document.querySelectorAll("tbody tr");
+      
+          rows.forEach(row => {
+            let rowData = {};
+            row.querySelectorAll("input").forEach(input => {
+              rowData[input.dataset.col] = input.value;
+            });
+            updatedData.push(rowData);
+          });
+      
+          document.getElementById("updatedData").value = JSON.stringify(updatedData);
+          this.submit();
+        });
+      </script>
+      
 
     <a href="/" class="mt-4 block text-center text-blue-400 hover:text-blue-500 transition duration-200">Back to Home</a>
   </div>
